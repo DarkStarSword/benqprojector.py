@@ -240,7 +240,12 @@ class BenQProjector:
             logger.error(
                 "Unable to retrieve projector model, is projector powering down?"
             )
-            raise
+            # W1070 blocks this command while the projector is off, which is
+            # problematic if HA is restarted while the projector is off. FIXME:
+            # Maybe we want to cache the model in home assistant and pass it
+            # here as a default?
+            #raise
+            model = 'w1070/w1250'
         self.model = model
 
         with importlib.resources.open_text("benqprojector.configs", "all.json") as file:
